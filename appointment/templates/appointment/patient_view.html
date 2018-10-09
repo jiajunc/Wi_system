@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ patient }}</title>
+</head>
+<body>
+    <section>
+        <h3>Medication History</h3>
+        <ul>
+            {% for prescription in prescription_list %}
+                <li>
+                    <a href="">{{ prescription }}</a>
+                </li>
+            {% empty %}
+                <li><em>There are currently no prescriptions for you.</em></li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h3>Appointment History</h3>
+        <ul>
+            {% for appointment in appointment_list %}
+                <li>
+                    <a href="">{{ appointment }}</a>
+                </li>
+            {% empty %}
+                <li><em>There are currently no prescriptions for you.</em></li>
+            {% endfor %}
+        </ul>
+    </section>
+    <a class="btn btn-default" href="{% url 'prescribe_url' pat_pk=patient.pk doc_pk=dock.pk %}">Prescribe Medication</a>
+</body>
+</html>
