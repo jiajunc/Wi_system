@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ patient }}{% endblock %}
+{% block content %}
+            <h3>{{ patient }}</h3>
+    <section>
+        <h3>Current Prescriptions</h3>
+        <ul>
+            {% for prescription in prescription_list %}
+                {% if prescription.end_date > today %}
+                <li>
+                    <a href="">{{ prescription }}</a>
+                </li>
+                {% endif %}
+            {% empty %}
+                <li><em>There are currently no prescriptions for you.</em></li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section>
+    <h3>Current Schedule</h3>
+        <ul>
+            {% for appointment in appointment_list %}
+                {% if appointment.date > today %}
+                <li>
+                    On {{ appointment.date }} from {{ appointment.time }} <a href="{% url 'patient_detail_url' pk=appointment.app_patient.pk %}" >{{ appointment.app_patient.username }}</a>
+                </li>
+                {% endif %}
+            {% empty %}
+                <li><em>There are currently no appointments for you.</em></li>
+            {% endfor %}
+        </ul>
+    </section>
+    <a class="btn btn-default" href="{% url 'make_appointment_url' %}">Make Appointment</a>
+{% endblock %}

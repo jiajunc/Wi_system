@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h3>Welcome!</h3>
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+
+    {% if user.is_doctor %}
+        <a href="{% url 'doctor_view_url'%}" >go to doctor view</a>
+    {% endif %}
+    {% if user.is_patient %}
+        <a href="{% url 'patient_view_url'%}" >go to patient view</a>
+    {% endif %}
+  <p><a href="{% url 'logout' %}">logout</a></p>
+{% else %}
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

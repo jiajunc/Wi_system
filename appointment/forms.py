@@ -3,14 +3,14 @@ from datetime import date
 from django import forms
 from datetimewidget.widgets import DateTimeWidget
 
-from .models import Appointment, Prescription
+from .models import Prescription, Appointment
 
 
 class AppointmentForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = ('doctor', 'date', 'timeslot',)
+        fields = ('app_doctor', 'date', 'timeslot',)
         widgets = {
             'date': DateTimeWidget(
                 attrs={'id': 'date'}, usel10n=False, bootstrap_version=3,
@@ -40,7 +40,7 @@ class PrescriptionForm(forms.ModelForm):
 
     class Meta:
         model = Prescription
-        fields = ('patient', 'doctor', 'drug', 'dossage', 'frequency', 'start_date', 'end_date',)
+        fields = ('pre_patient', 'pre_doctor', 'drug', 'dossage', 'frequency', 'start_date', 'end_date',)
         widgets = {
             'start_date': DateTimeWidget(
                 attrs={'id': 'date'}, usel10n=False, bootstrap_version=3,

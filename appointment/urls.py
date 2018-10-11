@@ -1,10 +1,5 @@
 from django.conf.urls import url
 from django.urls import path
-from .views import (
-    patient_detail,
-    doctor_detail,
-    patient_view,
-)
 from . import views
 
 
@@ -14,17 +9,18 @@ urlpatterns = [
     # path('/<int:pk>', views.post_detail, name='post_detail'),
     # make an appointment with doctor
 
-    url(r'^patient/(?P<pk>\d+)/appointment/$', views.make_appointment, name='make_appointment_url'),
-    url(r'^patient/(?P<pk>\d+)/view/$', patient_view.as_view(), name='patient_view_url'),
-    path('patient/<int:pk>/',
-         patient_detail.as_view(),
-         name='patient_detail_urlpattern'),
-
-    url(r'^doctor/(?P<pk>\d+)/prescription/$', views.make_prescription, name='make_prescription_url'),
-    url(r'^doctor/(?P<doc_pk>\d+)/prescription/(?P<pat_pk>\d+)/$', views.prescribe, name='prescribe_url'),
-    path('doctor/<int:pk>/',
-         doctor_detail.as_view(),
-         name='doctor_detail_urlpattern'),
+    # url(r'^patient/(?P<pk>\d+)/appointment/$', views.make_appointment, name='make_appointment_url'),
+    # url(r'^patient/(?P<pk>\d+)/view/$', patient_view.as_view(), name='patient_view_url'),
+    # path('patient/<int:pk>/',
+    #      patient_detail.as_view(),
+    #      name='patient_detail_urlpattern'),
+    #
+    # url(r'^doctor/(?P<pk>\d+)/prescription/$', views.make_prescription, name='make_prescription_url'),
+    url(r'^doctor/prescribeto/(?P<pk>\d+)/$', views.prescribe_to, name='prescribe_url'),
+    path('patient./manage/appointment/', views.make_appointment, name='make_appointment_url'),
+    # path('doctor/<int:pk>/',
+    #      doctor_detail.as_view(),
+    #      name='doctor_detail_urlpattern'),
     # # find the current dosage
     # path('patient/<int:pk>', views.patient_prescription, name='make_appointment'),# how to find comment for post
     # path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),

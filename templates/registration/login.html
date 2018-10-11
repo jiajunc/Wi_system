@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+    <div class = "container">
+        <div class = "row">
+            <h1 style = "text-align:center">login</h1>
+            <div style = "width:30%; margin: 25px auto;">
+                <div id="login">
+                    <form class="form-horizontal" name="LoginForm" action="/login/" method="post">
+                        {% csrf_token %}
+                        {% if next %}
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        {% endif %}
+                        <div class = "form-group">
+                            <input class = "form-control" type = "text" name = "username" placeholder = "username">
+                        </div>
+                        <div class = "form-group">
+                            <input class = "form-control" type = "password" name = "password" placeholder = "password">
+                        </div>
+                            <label class="control-label" for="radio">Status:</label>
+                        <div>
+                            <label class="radio inline">
+                              <input type="radio" name="is_doctor" id="optionsRadios1" value="True" checked>
+                              Doctor
+                            </label>
+                            <label class="radio inline">
+                              <input type="radio" name="is_doctor" id="optionsRadios2" value="False">
+                              Patient
+                            </label>
+                        </div>
+                        <div class = "form-group">
+                            <button type="submit" class = "btn btn-lg btn-primary btn-block">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

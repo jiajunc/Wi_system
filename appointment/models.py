@@ -1,39 +1,45 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.contrib.auth import get_user_model
+# from django.contrib.auth.models import User
 
+User = get_user_model()
+#
+# class Doctor(models.Model):
+#     doctor_ssn = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(999999999)])
+#     first_name = models.CharField(max_length=20)
+#     last_name = models.CharField(max_length=20)
+#     specialty = models.CharField(max_length=20)
+#
+#     def __str__(self):
+#         return '{} {}'.format(self.specialty, self.short_name)
+#
+#     @property
+#     def short_name(self):
+#         return '{} {}'.format(self.last_name.title(), self.first_name[0].upper())
+#
+#
+# class Patient(models.Model):
+#     patient_ssn = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(999999999)])
+#     first_name = models.CharField(max_length=20)
+#     last_name = models.CharField(max_length=20)
+#
+#     def __str__(self):
+#         return '{}'.format(self.short_name)
+#
+#     @property
+#     def short_name(self):
+#         return '{} {}'.format(self.last_name.title(), self.first_name[0].upper())
 
-class Doctor(models.Model):
-    doctor_ssn = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(999999999)])
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    specialty = models.CharField(max_length=20)
-
-    def __str__(self):
-        return '{} {}'.format(self.specialty, self.short_name)
-
-    @property
-    def short_name(self):
-        return '{} {}'.format(self.last_name.title(), self.first_name[0].upper())
-
-
-class Patient(models.Model):
-    patient_ssn = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(999999999)])
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return '{}'.format(self.short_name)
-
-    @property
-    def short_name(self):
-        return '{} {}'.format(self.last_name.title(), self.first_name[0].upper())
-
-
+#
 class Appointment(models.Model):
     class Meta:
-        unique_together = (('patient', 'doctor', 'date', 'timeslot'),'')
-        ordering = ['date', 'timeslot']
+        ordering = ['app_doctor', 'date', 'timeslot']
+        unique_together = (('app_doctor', 'date', 'timeslot'),)
 
     TIMESLOT_LIST = (
         (0, '09:00 – 10:00'),
@@ -46,15 +52,15 @@ class Appointment(models.Model):
         (7, '16:00 – 17:00'),
         (8, '17:00 – 18:00'),
     )
-
+#
     appointment_id = models.AutoField(primary_key=True)
-    doctor = models.ForeignKey('Doctor', related_name='appointments', on_delete=models.PROTECT)
-    patient = models.ForeignKey('Patient',  related_name='appointments', on_delete=models.PROTECT)
+    app_doctor = models.ForeignKey(User, related_name='doctor_appointments', on_delete=models.PROTECT, default=1)
+    app_patient = models.ForeignKey(User, related_name='patient_appointments', on_delete=models.PROTECT, default=1)
     date = models.DateField()
     timeslot = models.IntegerField(choices=TIMESLOT_LIST)
 
     def __str__(self):
-        return '{} {} {}. Patient: {}'.format(self.date, self.time, self.doctor, self.patient)
+        return '{} {} {}. Patient: {}'.format(self.date, self.time, self.app_doctor, self.app_patient)
 
     @property
     def time(self):
@@ -98,11 +104,11 @@ class Prescription(models.Model):
     )
 
     prescription_id = models.AutoField(primary_key=True)
-    doctor = models.ForeignKey('Doctor', related_name='prescriptions', on_delete=models.PROTECT, default=000000000)
-    patient = models.ForeignKey('Patient', related_name='prescriptions', on_delete=models.PROTECT, default=000000000)
-    dossage = models.IntegerField(choices=DOSSAGE_LIST, default=10)
-    frequency = models.IntegerField(choices=FREQUENCY_LIST, default=10)
-    drug = models.IntegerField(choices=DRUG_LIST, default=10)
+    pre_doctor = models.ForeignKey(User, related_name='doctor_prescriptions', on_delete=models.PROTECT, default=1)
+    pre_patient = models.ForeignKey(User, related_name='patient_prescriptions', on_delete=models.PROTECT, default=1)
+    dossage = models.IntegerField(choices=DOSSAGE_LIST, default=0)
+    frequency = models.IntegerField(choices=FREQUENCY_LIST, default=0)
+    drug = models.IntegerField(choices=DRUG_LIST, default=0)
     start_date = models.DateField(default= timezone.now)
     end_date = models.DateField(default= timezone.now)
 
@@ -123,3 +129,5 @@ class Prescription(models.Model):
 
     class Meta:
         ordering = ['start_date', 'end_date']
+
+

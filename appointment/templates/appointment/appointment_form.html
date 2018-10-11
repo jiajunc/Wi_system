@@ -1,15 +1,30 @@
-{% extends 'appointment/base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make an Appointment</title>
 
-{% block form %}
-<div class="panel panel-default">
-    <div class="panel-body">
-        <section id="form-wrapper">
-            <form method="POST" class="appointment-form">{% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="reset" class="btn btn-default">Reset</button>
-            </form>
-        </section>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+
+    {% if form %}
+    {{ form.media }}
+    {% endif %}
+</head>
+<body>
+    <div class = "container">
+        <div class = "row">
+            <h1 style = "text-align:center">Appointment</h1>
+            <div style = "width:30%; margin: 25px auto;">
+                <div id="appointment">
+                    <form method="POST" class="appointment-form">{% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
