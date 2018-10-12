@@ -3,19 +3,26 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h3>Welcome!</h3>
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-
-    {% if user.is_doctor %}
-        <a href="{% url 'doctor_view_url'%}" >go to doctor view</a>
-    {% endif %}
-    {% if user.is_patient %}
-        <a href="{% url 'patient_view_url'%}" >go to patient view</a>
-    {% endif %}
-  <p><a href="{% url 'logout' %}">logout</a></p>
-{% else %}
-  <a href="{% url 'login' %}">login</a> |
-  <a href="{% url 'signup' %}">signup</a>
-{% endif %}
+    <header class = "jumbotron">
+        <div class = "container">
+            {% if user.is_authenticated %}
+                <h3>Hi! {{ user }}.</h3>
+                <div style="padding-top:50px">
+                {% if user.is_doctor %}
+                    <a class = "btn btn-primary" href="{% url 'doctor_view_url'%}" >go to doctor view</a>
+                {% endif %}
+                {% if user.is_patient %}
+                    <a class = "btn btn-success" href="{% url 'patient_view_url'%}" >go to patient view</a>
+                {% endif %}
+                <a class = "btn btn-default" href="{% url 'logout' %}">logout</a>
+                </div>
+            {% else %}
+                <h3>Welcome to Willhelm Medication System!</h3>
+                <div style="padding-top:50px">
+                    <a class = "btn btn-success" href="{% url 'login' %}">login</a>
+                <a class = "btn btn-primary" href="{% url 'signup' %}">signup</a>
+                </div>
+            {% endif %}
+        </div>
+    </header>
 {% endblock %}

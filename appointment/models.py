@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.forms import forms
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -52,7 +53,8 @@ class Appointment(models.Model):
         (7, '16:00 – 17:00'),
         (8, '17:00 – 18:00'),
     )
-#
+
+
     appointment_id = models.AutoField(primary_key=True)
     app_doctor = models.ForeignKey(User, related_name='doctor_appointments', on_delete=models.PROTECT, default=1)
     app_patient = models.ForeignKey(User, related_name='patient_appointments', on_delete=models.PROTECT, default=1)
@@ -60,11 +62,17 @@ class Appointment(models.Model):
     timeslot = models.IntegerField(choices=TIMESLOT_LIST)
 
     def __str__(self):
-        return '{} {} {}. Patient: {}'.format(self.date, self.time, self.app_doctor, self.app_patient)
+        return '{} {}. Doctor: {}. Patient: {}.'.format(self.date, self.time, self.app_doctor, self.app_patient)
 
     @property
     def time(self):
         return self.TIMESLOT_LIST[self.timeslot][1]
+
+    def patient_view(self):
+        return '{} {}. Doctor: {}'.format(self.date, self.time, self.app_doctor)
+
+    def doctor_view(self):
+        return '{} {}. Patient: {}'.format(self.date, self.time, self.app_patient)
 
 
 class Prescription(models.Model):

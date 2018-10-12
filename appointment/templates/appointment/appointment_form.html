@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Make an Appointment</title>
+    <title>Make a prescription</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -12,13 +12,46 @@
     {% endif %}
 </head>
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="/">Willhelm International</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="{% url 'home' %}">Home</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  {% if user.is_authenticated %}
+                      {% if user.is_doctor %}
+                      <li><a href="{% url 'doctor_view_url' %}">Doctor View</a></li>{% endif %}
+                      {% if user.is_patient %}
+                      <li><a href="{% url 'patient_view_url' %}">Patient View</a></li>
+                      {% endif %}
+                      <li><a href="{% url 'logout' %}">Logout</a></li>
+                  {% else %}
+                      <li><a href="{% url 'signup' %}">SignUp</a></li>
+                      <li><a href="{% url 'login' %}">Login</a></li>
+                  {% endif %}
+              </ul>
+            </div>
+        </div>
+    </nav>
     <div class = "container">
         <div class = "row">
             <h1 style = "text-align:center">Appointment</h1>
             <div style = "width:30%; margin: 25px auto;">
                 <div id="appointment">
-                    <form method="POST" class="appointment-form">{% csrf_token %}
-                        {{ form.as_p }}
+                    <form method="POST" class="appointment-form">
+                        {% csrf_token %}
+                        {% include 'includes/bs_form.html' with form=form %}
                         <button type="submit" class="btn btn-primary">Save</button>
                         <button type="reset" class="btn btn-default">Reset</button>
                     </form>

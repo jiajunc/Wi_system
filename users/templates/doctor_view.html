@@ -3,19 +3,24 @@
 {% block title %}{{ doctor }}{% endblock %}
 
 {% block content %}
-    <section>
-        <h3>Current Schedule</h3>
-        <ul>
-            {% for appointment in appointment_list %}
-                {% if appointment.date > today %}
-                <li>
-                    On {{ appointment.date }} from {{ appointment.time }} <a href="{% url 'patient_detail_url' pk=appointment.app_patient.pk %}" >{{ appointment.app_patient.username }}</a>
-                </li>
-                {% endif %}
-            {% empty %}
-                <li><em>There are currently no appointments for you.</em></li>
-            {% endfor %}
-        </ul>
-    </section>
-{#    <a class="btn btn-default" href="{% url 'make_prescription_url' pk=doctor.pk %}">Prescribe Medication</a>#}
+    <header class = "jumbotron">
+        <div>
+            <section>
+                <h3>Current Schedule</h3>
+                <ul>
+                    {% for appointment in appointment_list %}
+                        {% if appointment.date > today %}
+                        <li>
+                            <a href="{% url 'patient_detail_url' pk=appointment.app_patient.pk %}" >{{ appointment.doctor_view }}</a>
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <li><em>There are currently no appointments for you.</em></li>
+                    {% endfor %}
+                </ul>
+            </section>
+{#        doctor can only prescribe to those patient who have appointment#}
+{#    <a class="btn btn-default" href="{% url 'prescribe_url' pk=doctor.pk %}">Prescribe Medication</a>#}
+        </div>
 {% endblock %}
+

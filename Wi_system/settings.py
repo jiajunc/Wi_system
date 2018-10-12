@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appointment',
     'datetimewidget',
-    'users'
+    'users',
+    'widget_tweaks',
 
 ]
 

@@ -2,30 +2,36 @@
 
 {% block title %}{{ patient }}{% endblock %}
 {% block content %}
-    <section>
-        <h3>Medication History</h3>
-        <ul>
-            {% for prescription in prescription_list %}
-                <li>
-                    <a href="">{{ prescription }}</a>
-                </li>
-            {% empty %}
-                <li><em>There are currently no prescriptions history for this patient.</em></li>
-            {% endfor %}
-        </ul>
-    </section>
+    <header class = "jumbotron">
+        <div>
+            <section>
+                <h3>Medication History</h3>
+                <ul>
+                    {% for prescription in prescription_list %}
+                        <li>
+                            {{ prescription }}
+                        </li>
+                    {% empty %}
+                        <li><em>There are currently no prescriptions history for this patient.</em></li>
+                    {% endfor %}
+                </ul>
+            </section>
+                </div>
+            <div>
 
-    <section>
-        <h3>Appointment History</h3>
-        <ul>
-            {% for appointment in appointment_list %}
-                <li>
-                    <a href="">{{ appointment }}</a>
-                </li>
-            {% empty %}
-                <li><em>There are currently no appointment history for this patient.</em></li>
-            {% endfor %}
-        </ul>
-    </section>
-    <a class="btn btn-default" href="{% url 'prescribe_url' pk=patient.pk %}">Prescribe Medication</a>
+            <section>
+                <h3>Appointment History</h3>
+                <ul>
+                    {% for appointment in appointment_list %}
+                        <li>
+                            {{ appointment.doctor_view }}
+                        </li>
+                    {% empty %}
+                        <li><em>There are currently no appointment history for this patient.</em></li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+    <a class="btn btn-primary" href="{% url 'prescribe_url' pk=patient.pk %}">Prescribe Medication</a>
+    </header>
 {% endblock %}

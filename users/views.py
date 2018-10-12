@@ -1,23 +1,17 @@
 from datetime import date
-
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
-
-# Create your views here.
-from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views import generic, View
 from .forms import CustomUserCreationForm
 from .models import CustomUser
 
 
-class SignUp(generic.CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'signup.html'
+# class SignUp(generic.CreateView):
+#     form_class = CustomUserCreationForm
+#     success_url = reverse_lazy('login')
+#     template_name = 'signup.html'
 
 
 def login_user(request):
@@ -36,11 +30,12 @@ def login_user(request):
             if user.is_active:
                 #generate patient view or user view according to login
                 login(request, user)
-                return HttpResponseRedirect('/main/')
+                return redirect('home')
     return render(request, 'login.html', {})
 
 
 def register_user(request):
+    logout(request)
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -53,22 +48,16 @@ def register_user(request):
             is_patient = form.cleaned_data.get('is_patient')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/main/')
-            # return redirect('home')
+            return redirect('home')
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
 
-def main(request):
-    return redirect('home')
-
-
-
-class doctor_view(LoginRequiredMixin, View):
+class DoctorView(LoginRequiredMixin, View):
 
     def get(self, request):
-        doctor = request.user
+        user = doctor = request.user
         # only doctor user can view
         if not doctor.is_doctor:
             return render(request, 'login.html', {})
@@ -78,14 +67,16 @@ class doctor_view(LoginRequiredMixin, View):
             'doctor_view.html',
             {'today': today,
              'doctor': doctor,
+             'user': user,
              'appointment_list': appointment_list}
         )
 
 
-class patient_view(LoginRequiredMixin, View):
+class PatientView(LoginRequiredMixin, View):
 
     def get(self, request):
-        patient = request.user
+
+        user = patient = request.user
         # only doctor user can view
         if not patient.is_patient:
             return render(request, 'login.html', {})
@@ -96,15 +87,16 @@ class patient_view(LoginRequiredMixin, View):
             'patient_view.html',
             {'today': today,
              'patient': patient,
+             'user': user,
              'prescription_list': prescription_list,
              'appointment_list': appointment_list}
         )
 
 
-class patient_detail(LoginRequiredMixin, View):
+class PatientDetail(LoginRequiredMixin, View):
 
     def get(self, request, pk):
-        doctor = request.user
+        user = doctor = request.user
         # only doctor user can view
         if not doctor.is_doctor:
             return render(request, 'login.html', {})
@@ -118,6 +110,7 @@ class patient_detail(LoginRequiredMixin, View):
             'patient_detail.html',
             {'patient': patient,
              'doctor': doctor,
+             'user': user,
              'prescription_list': prescription_list,
              'appointment_list': appointment_list}
         )

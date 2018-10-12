@@ -1,6 +1,6 @@
 from users.models import CustomUser
 from django.shortcuts import render, get_object_or_404
-from .forms import PrescribeForm, AppointmentForm, PrescriptionForm
+from .forms import PrescribeForm, AppointmentForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
